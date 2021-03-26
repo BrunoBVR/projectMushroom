@@ -118,17 +118,30 @@ if selected_view == 'Let\'s explore!':
 
     get_dists(selected_feat)
 
+############################################
+############################################ Modeling page
+############################################
+
 elif selected_view == 'Model away!':
     st.info(
     '''
     ### The modeling will be done using a [decision tree](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html).
-    ### Test size and maximum number of leaf nodes can be chosen at the sidebar.
+    ### Test size, maximum number of leaf nodes and cross-validation splits can be chosen at the sidebar.
     ''')
 
-    X = df_mush.drop('class', axis = 1)
-    y = df_mush['class']
-    X = X.drop('veil-type', axis = 1)
-    X = pd.get_dummies(X,drop_first=True)
+    '''
+    ## Data preprocessing
+    '''
+
+    col_exp, col_code = st.beta_columns(2)
+    with col_exp:
+        st.success('We drop "veil-type" feature as it has only one unique value '\
+        +'and get dummies for all remaining features (as they are all categorical!).')
+    with col_code:
+        with st.echo():
+            X = df_mush.drop(['class', 'veil-type'], axis = 1)
+            y = df_mush['class']
+            X = pd.get_dummies(X,drop_first=True)
 
     t_size = st.sidebar.slider(
         'Choose test-size:',
@@ -153,6 +166,8 @@ elif selected_view == 'Model away!':
         value = 5,
         step = 1
     )
+
+    see_tree = st.sidebar.checkbox('Plot decision tree?')
 
     if st.button('Run model'):
 
@@ -196,6 +211,8 @@ elif selected_view == 'Model away!':
                 ax = sns.heatmap(cf_matrix, annot=labels, fmt='',
                                  cmap = 'vlag', xticklabels=categories, yticklabels=categories,
                                  annot_kws={"fontsize":24})
+                ax.set(xlabel="Predicted label")
+                ax.set(ylabel="True label")
                 st.pyplot(fig_c2)
 
             if visual:
@@ -205,18 +222,20 @@ elif selected_view == 'Model away!':
                 plot_tree(model,filled=True,feature_names=X.columns)
                 st.pyplot()
 
-        report_model(model, True)
+        report_model(model, see_tree)
 
         def get_cv(model, cv):
             st.write('Cross validating the model: ', model)
             st.write(50*'=')
             scores = cross_val_score(model,X_train,y_train, scoring='accuracy',cv=cv)
 
-            st.write('Cross-validated accuracy scores:')
-            st.text(scores)
+            st.info('Cross-validated accuracy scores: \n \n'+str(scores))
+            # st.write('Cross-validated accuracy scores:')
+            # st.text(scores)
             st.write(50*'=')
-            st.write('Mean cross-validated accuracy score:')
-            st.write(scores.mean())
+            st.info('Mean cross-validated accuracy score: \n \n'+str(scores.mean()))
+            # st.write('Mean cross-validated accuracy score:')
+            # st.write(scores.mean())
             st.write(50*'=' + '\n\n')
 
         get_cv(model, c_v)
