@@ -1,3 +1,5 @@
+## Bruno Vieira Ribeiro 03/2021
+
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -185,7 +187,7 @@ elif selected_view == 'Model away!':
 
             c_report = classification_report(y_test, model_preds)
 
-            '### Confusion matrix:'
+            '## Confusion matrix:'
             col1, col2 = st.beta_columns(2)
             with col1:
                 st.write('')
@@ -225,7 +227,8 @@ elif selected_view == 'Model away!':
         report_model(model, see_tree)
 
         def get_cv(model, cv):
-            st.write('Cross validating the model: ', model)
+            st.markdown('## Cross-validation:')
+            st.write('Model: ', model)
             st.write(50*'=')
             scores = cross_val_score(model,X_train,y_train, scoring='accuracy',cv=cv)
 
