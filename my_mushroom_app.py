@@ -21,7 +21,7 @@ st.markdown('''
 # <img style="float: left;" src="https://mario.wiki.gallery/images/thumb/a/a6/Super_Mushroom_Artwork_-_Super_Mario_3D_World.png/1200px-Super_Mushroom_Artwork_-_Super_Mario_3D_World.png" width = 60>   The [mushroom dataset](https://archive.ics.uci.edu/ml/datasets/Mushroom) <img style="float: right;" src="https://i.pinimg.com/originals/a8/ff/3e/a8ff3ed1011dbabc869ab8ea401ace4e.png" width=80>
 ''', unsafe_allow_html=True)
 
-df_mush = pd.read_csv('../mushrooms.csv')
+df_mush = pd.read_csv('mushrooms.csv')
 
 selected_view = st.selectbox(
     'Would you like to explore the data or do some modeling?',
