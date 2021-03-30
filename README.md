@@ -56,3 +56,5 @@ Contains basic EDA and modeling with a [decision tree classifier](https://scikit
 # The app (app/)
 
 Streamlit app to do some data exploration and modeling. The app allows building of a decision tree classifier with controlled number of maximum leaf nodes. The app shows classification report, confusion matrix and a plot of the tree (and some cool balloons if you hit that 100% accuracy!).
+
+Check out the [app](https://share.streamlit.io/brunobvr/projectmushroom/main/my_mushroom_app.py)
